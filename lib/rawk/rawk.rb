@@ -5,7 +5,7 @@ module Rawk
     end
     
     def start(block)
-      @start << block 
+      @start << block unless @start.include? block
     end
     
     def run(&block)
