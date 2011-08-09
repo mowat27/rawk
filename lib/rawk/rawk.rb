@@ -23,7 +23,7 @@ module Rawk
       instance_eval(&block)
       @start.each {|b| b.call}
       @input_stream.each_line do |line|
-        @every.each {|b| b.call}
+        @every.each {|b| b.call(line.chomp)}
       end
       @finish.each {|b| b.call}
     end

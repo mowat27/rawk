@@ -7,6 +7,22 @@ module Rawk
         @data = "a b\nc d\ne f\n"
         @program = Program.new(@data)
       end
+      
+      it "calls the start, every and finish blocks" do
+        start_block = mock("start block")
+        every_block = mock("every block")
+        finish_block = mock("finish block")
+
+        start_block.should_receive(:call).once    
+        every_block.should_receive(:call).exactly(3).times        
+        finish_block.should_receive(:call).once
+        
+        @program.run do
+          start(start_block)
+          every(every_block)
+          finish(finish_block)
+        end
+      end
 
       # Start -----------            
       it "calls each of many start blocks once" do
@@ -47,6 +63,14 @@ module Rawk
           every(every)
           every(every)
         end
+      end
+      
+      it "passes each line in turn to the every block" do
+        block = mock("every block")
+        block.should_receive(:call).once.with("a b").ordered
+        block.should_receive(:call).once.with("c d").ordered
+        block.should_receive(:call).once.with("e f").ordered
+        @program.run {every(block)}
       end
       
       # Finish -----------      
