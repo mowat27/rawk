@@ -28,7 +28,7 @@ module Rawk
         end        
       end
 
-      # During -----------      
+      # Every -----------      
       it "calls all the every blocks n times with each line of data" do
         every1 = mock("every 1")
         every2 = mock("every 2")

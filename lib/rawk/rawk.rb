@@ -1,16 +1,18 @@
+require 'set'
+
 module Rawk
   class Program
     def initialize(input_stream)
-      @start, @every = [], []
+      @start, @every = Set.new, Set.new
       @input_stream = input_stream
     end
     
     def start(block)
-      @start << block unless @start.include? block
+      @start << block
     end
     
     def every(block)
-      @every << block unless @every.include? block
+      @every << block
     end
     
     def run(&block)
