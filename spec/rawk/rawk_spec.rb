@@ -48,6 +48,26 @@ module Rawk
           every(every)
         end
       end
+      
+      # Finish -----------      
+      it "calls every finish block once" do
+        block1 = mock("finish block 1")
+        block2 = mock("finish block 2")
+        block1.should_receive(:call).once
+        block2.should_receive(:call).once
+        @program.run do
+          finish(block1)
+          finish(block2)
+        end
+      end
+      it "calls duplicate finish blocks only once" do
+        block = mock("finish block")
+        block.should_receive(:call).once
+        @program.run do
+          finish(block)
+          finish(block)
+        end
+      end
     end
   end
 end
