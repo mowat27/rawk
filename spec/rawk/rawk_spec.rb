@@ -9,87 +9,81 @@ module Rawk
       end
       
       it "calls the start, every and finish blocks" do
-        start_block = mock("start block")
-        every_block = mock("every block")
-        finish_block = mock("finish block")
-
+        start_block, every_block, finish_block = lambda {}, lambda {}, lambda {}
         start_block.should_receive(:call).once    
         every_block.should_receive(:call).exactly(3).times        
         finish_block.should_receive(:call).once
         
         @program.run do
-          start(start_block)
-          every(every_block)
-          finish(finish_block)
+          start  &start_block
+          every  &every_block
+          finish &finish_block
         end
       end
 
       # Start -----------            
       it "calls each of many start blocks once" do
-        start_block1 = mock("start block 1")
-        start_block2 = mock("start block 2")
-        start_block1.should_receive(:call).once
-        start_block2.should_receive(:call).once                
+        block1, block2 = lambda {}, lambda {}
+        block1.should_receive(:call).once
+        block2.should_receive(:call).once                
         @program.run do
-          start(start_block1)                    
-          start(start_block2)                    
+          start &block1                    
+          start &block2                    
         end
       end
       it "only calls a duplicate start block once" do
-        start_block = mock("start block")
-        start_block.should_receive(:call).once
+        block = lambda {}
+        block.should_receive(:call).once
         @program.run do
-          start(start_block)                    
-          start(start_block)                    
+          start &block                  
+          start &block                    
         end        
       end
-
+      
       # Every -----------      
       it "calls all the every blocks n times with each line of data" do
-        every1 = mock("every 1")
-        every2 = mock("every 2")
-        every1.should_receive(:call).exactly(3).times
-        every2.should_receive(:call).exactly(3).times
+        block1, block2 = lambda {}, lambda {}
+        block1.should_receive(:call).exactly(3).times
+        block2.should_receive(:call).exactly(3).times
         @program.run do
-          every(every1)
-          every(every2)
+          every &block1
+          every &block2
         end
       end
       
       it "calls duplicate every blocks only once for each line" do
-        every = mock("every block")
-        every.should_receive(:call).exactly(3).times
+        block = lambda {}
+        block.should_receive(:call).exactly(3).times
         @program.run do
-          every(every)
-          every(every)
+          every &block
+          every &block
         end
       end
       
       it "passes each line in turn to the every block" do
-        block = mock("every block")
+        block = lambda {}
         block.should_receive(:call).once.with("a b").ordered
         block.should_receive(:call).once.with("c d").ordered
         block.should_receive(:call).once.with("e f").ordered
-        @program.run {every(block)}
+        @program.run {every &block}
       end
       
       # Finish -----------      
       it "calls every finish block once" do
-        block1 = mock("finish block 1")
-        block2 = mock("finish block 2")
+        block1, block2 = lambda {}, lambda {}
         block1.should_receive(:call).once
         block2.should_receive(:call).once
         @program.run do
-          finish(block1)
-          finish(block2)
+          finish &block1
+          finish &block2
         end
       end
       it "calls duplicate finish blocks only once" do
-        block = mock("finish block")
+        block = lambda {}
         block.should_receive(:call).once
         @program.run do
-          finish(block)
-          finish(block)
+          finish &block
+          finish &block
         end
       end
     end

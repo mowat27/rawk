@@ -7,20 +7,21 @@ module Rawk
       @input_stream = input_stream
     end
         
-    def start(block)
+    def start(&block)
       @start << block
     end
     
-    def every(block)
+    def every(&block)
       @every << block
     end
     
-    def finish(block)
+    def finish(&block)
       @finish << block
     end
     
     def run(&block)
-      instance_eval(&block)
+      instance_eval(&block) 
+      
       @start.each {|b| b.call}
       @input_stream.each_line do |line|
         @every.each {|b| b.call(line.chomp)}
