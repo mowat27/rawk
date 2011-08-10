@@ -41,5 +41,7 @@ module Rawk
     def cols
       split(" ")
     end
+    
+    alias :c :cols
   end
 end

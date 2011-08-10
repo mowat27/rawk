@@ -13,6 +13,7 @@ module Rawk
     end
     it "finds space-delimited columns" do
       @line.cols.should == ["a","b","c"]
+      @line.c.should == @line.cols
     end
   end
 end
