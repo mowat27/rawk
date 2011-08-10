@@ -27,10 +27,19 @@ module Rawk
       end
       
       @start.each {|b| b.call}
-      @input_stream.each_line do |line|
-        @every.each {|b| b.call(line.chomp)}
+      @input_stream.each_line do |row|
+        @every.each {|b| b.call(Line.new(row))}
       end
       @finish.each {|b| b.call}
+    end
+  end
+  
+  class Line < String
+    def initialize(str)
+      super(str.chomp)
+    end
+    def cols
+      split(" ")
     end
   end
 end
