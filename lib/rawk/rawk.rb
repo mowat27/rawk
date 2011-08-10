@@ -6,7 +6,7 @@ module Rawk
       @start, @every, @finish = Set.new, Set.new, Set.new
       @input_stream = input_stream
     end
-        
+           
     def start(&block)
       @start << block
     end
@@ -20,17 +20,25 @@ module Rawk
     end
     
     def run(code = "", &block)
+      load!(code, &block)
+      execute_code!
+    end
+    
+    private 
+    def load!(code, &block)
       if code.empty?
         instance_eval(&block) 
       else
         instance_eval(code)
       end
-      
+    end
+    
+    def execute_code!
       @start.each {|b| b.call}
-      @input_stream.each_line do |row|
-        @every.each {|b| b.call(Line.new(row))}
-      end
-      @finish.each {|b| b.call}
+       @input_stream.each_line do |row|
+         @every.each {|b| b.call(Line.new(row))}
+       end
+       @finish.each {|b| b.call}
     end
   end
   
