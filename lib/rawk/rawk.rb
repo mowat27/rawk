@@ -46,10 +46,14 @@ module Rawk
     def initialize(str)
       super(str.chomp)
     end
+    
     def cols
       split(" ")
     end
-    
     alias :c :cols
+    
+    def nf 
+      cols.length
+    end
   end
 end

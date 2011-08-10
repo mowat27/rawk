@@ -15,5 +15,8 @@ module Rawk
       @line.cols.should == ["a","b","c"]
       @line.c.should == @line.cols
     end
+    it "calculates the number of fields" do
+      @line.nf.should == 3
+    end
   end
 end
