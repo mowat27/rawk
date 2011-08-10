@@ -35,10 +35,10 @@ module Rawk
     
     def execute_code!
       @start.each {|b| b.call}
-       @input_stream.each_line do |row|
-         @every.each {|b| b.call(Line.new(row))}
-       end
-       @finish.each {|b| b.call}
+      @input_stream.each_line do |row|
+        @every.each {|b| b.call(Line.new(row))}
+      end
+      @finish.each {|b| b.call}
     end
   end
   
