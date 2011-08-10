@@ -19,8 +19,12 @@ module Rawk
       @finish << block
     end
     
-    def run(&block)
-      instance_eval(&block) 
+    def run(code = "", &block)
+      if code.empty?
+        instance_eval(&block) 
+      else
+        instance_eval(code)
+      end
       
       @start.each {|b| b.call}
       @input_stream.each_line do |line|
