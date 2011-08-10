@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+PROJECT_DIR=File.expand_path(File.join(File.dirname(__FILE__), '..'))
+$: << File.join(PROJECT_DIR, 'lib')
+
+require 'rawk/rawk'
+
+DATA = STDIN
+DSL_CODE = ARGV[0]
+
+Rawk::Program.new(DATA).run(DSL_CODE)
