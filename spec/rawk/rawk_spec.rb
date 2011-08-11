@@ -9,24 +9,7 @@ module Rawk
       @data = StringIO.new("a b\nc d\ne f\n")
       @program = Program.new(@data)
     end
-    
-    it "can read input data from a stream" do
-      tempfile = "tempfile"
-      begin
-        File.open(tempfile, "w") {|f| f.puts @data.read}
-        
-        block = lambda {}
-        block.should_receive(:call).exactly(3).times
-        File.open(tempfile, "r") do |f|
-          Program.new(f).run do
-            every &block
-          end
-        end          
-      ensure 
-        File.delete tempfile if File.file? tempfile
-      end      
-    end
-        
+     
     context "against n lines of space delimited data" do
       it "calculates the record num as nr" do
         record_nums = []
@@ -38,7 +21,7 @@ module Rawk
         record_nums.should == [0,1,2,3,3]
       end
       
-      context "when passed code as a string" do      
+      context "when passed code in a string" do      
         it "runs the string as ruby code" do
           code = "every {puts 'foo'}"
           out = capture_stdout { @program.run code }.string
@@ -46,7 +29,7 @@ module Rawk
         end
       end
       
-      context "when passed ruby blocks" do                
+      context "when code in ruby blocks" do                
         it "the context of the outer program is in scope" do
           result = []
           @program.run do 
