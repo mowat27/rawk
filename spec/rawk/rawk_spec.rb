@@ -5,12 +5,28 @@ module Rawk
   describe Program do
     include TestHelpers
     
-    context "against n lines of space delimited data" do
-      before do
-        @data = "a b\nc d\ne f\n"
-        @program = Program.new(@data)
-      end
+    before do
+      @data = "a b\nc d\ne f\n"
+      @program = Program.new(@data)
+    end
 
+    it "can read input data from a stream" do
+      tempfile = "tempfile"
+      begin
+        File.open(tempfile, "w") {|f| f.puts @data}
+        block = lambda {}
+        block.should_receive(:call).exactly(3).times
+        File.open(tempfile, "r") do |f|
+          Program.new(f).run do
+            every &block
+          end
+        end          
+      ensure 
+        File.delete tempfile if File.file? tempfile
+      end      
+    end
+        
+    context "against n lines of space delimited data" do
       it "calculates the record num as nr" do
         record_nums = []
         @program.run do
