@@ -6,14 +6,15 @@ module Rawk
     include TestHelpers
     
     before do
-      @data = "a b\nc d\ne f\n"
+      @data = StringIO.new("a b\nc d\ne f\n")
       @program = Program.new(@data)
     end
-
+    
     it "can read input data from a stream" do
       tempfile = "tempfile"
       begin
-        File.open(tempfile, "w") {|f| f.puts @data}
+        File.open(tempfile, "w") {|f| f.puts @data.read}
+        
         block = lambda {}
         block.should_receive(:call).exactly(3).times
         File.open(tempfile, "r") do |f|
