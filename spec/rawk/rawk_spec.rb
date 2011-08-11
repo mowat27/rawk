@@ -18,8 +18,16 @@ module Rawk
           out.should == "foo\nfoo\nfoo\n"
         end
       end
-      
+            
       context "when passed ruby blocks" do      
+        it "the context of the outer program is in scope" do
+          result = []
+          @program.run do 
+            every {|l| result << l}
+          end
+          result.should == ["a b","c d","e f"]
+        end
+        
         it "calls the start, every and finish blocks" do
           start_block, every_block, finish_block = lambda {}, lambda {}, lambda {}
           start_block.should_receive(:call).once    
