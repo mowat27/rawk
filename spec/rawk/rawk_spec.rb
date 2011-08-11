@@ -10,6 +10,16 @@ module Rawk
         @data = "a b\nc d\ne f\n"
         @program = Program.new(@data)
       end
+
+      it "calculates the record num as nr" do
+        record_nums = []
+        @program.run do
+          start  {record_nums << nr}
+          every  {record_nums << nr}
+          finish {record_nums << nr}
+        end
+        record_nums.should == [0,1,2,3,3]
+      end
       
       context "when passed code as a string" do      
         it "runs the string as ruby code" do
@@ -18,8 +28,8 @@ module Rawk
           out.should == "foo\nfoo\nfoo\n"
         end
       end
-            
-      context "when passed ruby blocks" do      
+      
+      context "when passed ruby blocks" do                
         it "the context of the outer program is in scope" do
           result = []
           @program.run do 

@@ -4,7 +4,11 @@ module Rawk
   class Program    
     def initialize(input_stream)
       @start, @every, @finish = Set.new, Set.new, Set.new
-      @input_stream = input_stream
+      @input_stream = StringIO.new(input_stream)
+    end
+    
+    def nr 
+      @input_stream.lineno
     end
            
     def start(&block)
