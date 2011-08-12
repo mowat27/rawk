@@ -5,18 +5,12 @@ module Rawk
     def initialize(input_stream)
       @start, @every, @finish = Set.new, Set.new, Set.new
       @input_stream = input_stream
-      @fs = " "
-    end
-    
-    attr_reader :fs
-    def set_fs=(value)
-      @fs = value
     end
     
     def nr 
       @input_stream.lineno
     end
-               
+           
     def start(&block)
       @start << block
     end
@@ -46,20 +40,19 @@ module Rawk
     def execute_code!
       @start.each {|b| b.call}
       @input_stream.each_line do |row|
-        @every.each {|b| b.call(Line.new(row, fs))}
+        @every.each {|b| b.call(Line.new(row))}
       end
       @finish.each {|b| b.call}
     end
   end
   
   class Line < String
-    def initialize(str, fs)
-      self.replace(str.chomp)
-      @fs = fs
+    def initialize(str)
+      super(str.chomp)
     end
     
     def cols
-      split(@fs)
+      split(" ")
     end
     alias :c :cols
     
