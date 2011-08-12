@@ -113,14 +113,33 @@ module Rawk
     end
     
     describe "support for standard awk built-in variables" do
-      it "calculates the record num as nr" do
+      it "calculates the current record num as nr" do
         record_nums = []
-        @program.run do
-          start  {record_nums << nr}
-          every  {record_nums << nr}
+        @program.run do 
+          start {record_nums << nr} 
+          every {record_nums << nr}
           finish {record_nums << nr}
         end
         record_nums.should == [0,1,2,3,3]
+      end
+      
+      describe "fs" do
+        it "holds the current field separator expression" do
+          @program.fs.should == " "
+        end
+        it "is applied to each line of data" do
+          data = "line"
+          Line.should_receive(:new).with(data, " ")
+          Program.new(data).run {every {|l| nil}}
+        end
+        it "can be changed by the user's program" do
+          data = "line"
+          Line.should_receive(:new).with(data, ",").and_return("dummy")
+          Program.new(data).run do
+            start {@fs = ','}
+            every {|l| nil}
+          end
+        end
       end
     end
   end
