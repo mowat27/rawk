@@ -2,15 +2,12 @@ require 'set'
 
 module Rawk
   class Program    
+    attr_reader :fs
+    
     def initialize(input_stream)
       @start, @every, @finish = Set.new, Set.new, Set.new
       @input_stream = input_stream
       @fs = " "
-    end
-    
-    attr_reader :fs
-    def set_fs=(value)
-      @fs = value
     end
     
     def nr 
@@ -46,7 +43,7 @@ module Rawk
     def execute_code!
       @start.each {|b| b.call}
       @input_stream.each_line do |row|
-        @every.each {|b| b.call(Line.new(row, fs))}
+        @every.each {|b| b.call(Line.new(row, @fs))}
       end
       @finish.each {|b| b.call}
     end
