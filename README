@@ -1,7 +1,7 @@
-==Rawk 
+== Rawk 
 An awk implementation in ruby
 
-=Example
+= Example
 
 A simple awk program
 
