@@ -1,19 +1,22 @@
 require 'set'
+require 'observer'
 
-module Rawk
+module Rawk  
   class Program    
     attr_reader :fs
     
-    def initialize(input_stream)
+    def initialize(io)
       @start, @every, @finish = Set.new, Set.new, Set.new
-      @input_stream = input_stream
+      @input_stream = InputStream.new(io)
       @fs = " "
+      @nr = 0
+      @input_stream.add_observer(self)      
     end
     
-    def nr 
-      @input_stream.lineno
+    def update
+      @nr += 1
     end
-               
+    
     def start(&block)
       @start << block
     end
@@ -46,6 +49,22 @@ module Rawk
         @every.each {|b| b.call(Line.new(row, @fs))}
       end
       @finish.each {|b| b.call}
+    end
+  end
+  
+  class InputStream
+    include Observable
+    
+    def initialize(io)
+      @io = io
+    end
+    
+    def each_line
+      @io.each_line do |line| 
+        changed
+        notify_observers
+        yield line
+      end
     end
   end
   

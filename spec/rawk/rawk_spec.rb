@@ -116,9 +116,9 @@ module Rawk
       it "calculates the current record num as nr" do
         record_nums = []
         @program.run do 
-          start {record_nums << nr} 
-          every {record_nums << nr}
-          finish {record_nums << nr}
+          start {record_nums << @nr} 
+          every {record_nums << @nr}
+          finish {record_nums << @nr}
         end
         record_nums.should == [0,1,2,3,3]
       end
