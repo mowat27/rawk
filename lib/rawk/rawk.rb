@@ -8,15 +8,28 @@ module Rawk
     def initialize(io)
       @start, @every, @finish = Set.new, Set.new, Set.new
       @input_stream = InputStream.new(io)
+      @input_stream.add_observer(self)
+      initialize_builtins  
+    end
+    
+    private
+    def initialize_builtins
       @fs = " "
       @nr = 0
-      @input_stream.add_observer(self)      
     end
     
-    def update
+    public
+    def on_new_line
       @nr += 1
     end
+    alias :update :on_new_line
     
+    def run(code = "", &block)
+      load!(code, &block)
+      execute_code!
+    end
+    
+    # DSL 
     def start(&block)
       @start << block
     end
@@ -29,12 +42,7 @@ module Rawk
       @finish << block
     end
     
-    def run(code = "", &block)
-      load!(code, &block)
-      execute_code!
-    end
-    
-    private 
+    private
     def load!(code, &block)
       if code.empty?
         instance_eval(&block) 
