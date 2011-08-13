@@ -9,11 +9,11 @@ module Rawk
       @start, @every, @finish = Set.new, Set.new, Set.new
       @input_stream = InputStream.new(io)
       @input_stream.add_observer(self)
-      initialize_builtins  
+      initialize_builtins!
     end
     
     private
-    def initialize_builtins
+    def initialize_builtins!
       @fs = " "
       @nr = 0
     end
