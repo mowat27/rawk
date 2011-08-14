@@ -131,7 +131,7 @@ Classes
 
 Requires and gems
 
-  require works as you would expect.  Note that rubygems is not required by default so you need to load it.
+require works as you would expect although rubygems is not required by default.
 
   echo "ruby" | bin/rawk '
     require "rubygems"
