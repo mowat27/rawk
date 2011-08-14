@@ -10,9 +10,13 @@ Obviously, you can use ruby -e and {other magic}[http://code.joejag.com/2009/usi
 
 == Install
 
-Clone the git repo or download the file as a .tar or .zip.  The bin directory contains the rawk executable.  Does not require any gems (except rspec if you want to run the tests)
+From the command line
 
-I will package rawk as a gem when I find a spare moment.
+  gem install rawk
+
+Using bundler
+ 
+ gem "rawk", "~> 0.1.2"
 
 == Example
 
@@ -192,4 +196,15 @@ OFMT: Stores the format for numeric output. The default format is "%.6g".
 
 == Using rawk inside a ruby program
 
-Technically, you can require rawk and use it's classes directly.  However, it will be messy until I add gem packaging so I'll wait until you can install rawk as a gem before I go ahead an document it.
+Rawk code is evaluated within an instance of Rawk::Program.  You can use rawk within your programs as follows...
+
+  require 'rubygems'
+  require 'rawk'
+
+  data = "foo\nbar"
+  program = Rawk::Program.new(data)
+  
+  program.run do
+    every {|record| puts record.cols.first}
+  end
+  
