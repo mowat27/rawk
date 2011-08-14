@@ -1,0 +1,39 @@
+= Rawk 
+
+An awk implementation in ruby
+
+== Example
+
+A simple awk program
+
+  $ ls -ltr | awk '
+    BEGIN {print "Starting..."}
+    {print $9, $1}
+    END {print "done"} '
+
+Creates the following outpu
+
+  Starting...
+   total
+  spec drwxr-xr-x
+  lib drwxr-xr-x
+  bin drwxr-xr-x
+  README -rw-r--r--
+  done
+
+This can be written using rawk as
+
+  $ ls -ltr | bin/rawk '
+    start {puts "Starting..."}
+    every {|record| puts "#{record.cols[8]} #{record.cols[0]}"}
+    finish {puts "done"} '
+
+  Starting...
+   total
+  spec drwxr-xr-x
+  lib drwxr-xr-x
+  bin drwxr-xr-x
+  README -rw-r--r--
+  done
+
+And it also creates the same output
