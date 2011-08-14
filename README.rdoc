@@ -161,7 +161,8 @@ I'm working on support for the following awk built-ins
 
 FILENAME: 
 Contains the name of the current input-file.
-* I'll code this as @filename
+* Reading input data is not supported yet
+* When I add it, I'll add @filename as a member
 
 RS: 
 Stores the current "record separator" character. Since, by default, an input line is the input record, the default record separator character is a "newline".
@@ -169,7 +170,7 @@ Stores the current "record separator" character. Since, by default, an input lin
 * Currently, records are delimited by newline
 
 
-== Redundant
+=== Redundant
 
 The following awk built-ins are redundant in ruby
 
@@ -188,3 +189,7 @@ Stores the "output record separator", which separates the output records when Aw
 
 OFMT: Stores the format for numeric output. The default format is "%.6g".
 * Ruby's string and number handing gives you much better control over this sort of thing
+
+== Using rawk inside a ruby program
+
+Technically, you can require rawk and use it's classes directly.  However, it will be messy until I add gem packaging so I'll wait until you can install rawk as a gem before I go ahead an document it.
