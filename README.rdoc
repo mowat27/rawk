@@ -56,18 +56,17 @@ rawk provides 3 built-in conditions.
 
   start {<code>}
 
-Runs before any lines are read from the input stream
-* Equivalent to a BEGIN condition in awk
+Runs before any lines are read from the input stream.  Equivalent to a BEGIN condition in awk
 
   every {|record| <code>}
-Runs once for each line of input data
-* Equivalent to an anonymous block such as awk '{print $1}'
-* every yields an object of type Line (see below)
+
+Runs once for each line of input data.  Yields an object of type Line (see below)
+Equivalent to an anonymous block such as awk '{print $1}'
 
   finish {<code>}
 
 Runs after the end of the input stream
-* Equivalent to an END condition in awk
+Equivalent to an END condition in awk
 
 You can provide multiple blocks of code for each condition.
 
