@@ -2,7 +2,11 @@
 
 An awk-inspired ruby DSL
 
-Last week, after years of ignoring awk, I ran into a shell script problem where it was the only viable solution (we didn't have ruby on the server) and I was forced to learn a bit more about it.  Once, I had awk figured out, I thought it would be fun to write an awk DSL using ruby so I can use the power of ruby from the command line.  It's turned out to be quite an interesting little project for the daily train ride to work and back.
+Last week, after years of ignoring awk, I ran into a shell script problem where it was the only viable solution (we didn't have ruby on the server) and I was forced to learn a bit more about it.  
+
+Once, I had awk figured out, I thought it would be fun to write an awk DSL using ruby.  It's turned out to be quite an interesting little project for the daily train ride to work and back.
+
+Obviously, you can use ruby -e and {other magic}[http://code.joejag.com/2009/using-ruby-as-an-awk-replacement/] to execute snippets of ruby, but I like the way awk provides a bit more structure and a richer environment for more complex command line mangling.
 
 == Install
 
@@ -103,14 +107,47 @@ Note that cols is aliased to c for convenience
     
     -> hello
 
+== Functions, classes and other ruby stuff
+
+You can use ruby as normal before specifying any blocks.  For example...
+
+Functions
+
+  echo hello world | bin/rawk '
+    def print_first_column(record)
+      puts record.cols.first
+    end
+    every {|record| print_first_column(record)}'
+  
+Classes
+
+  echo hello world | bin/rawk '
+    class Printer
+      def self.print_first(record)
+        puts record.cols.first
+      end
+    end
+    every {|record| Printer.print_first(record)} '
+
+Requires and gems
+
+  require works as you would expect.  Note that rubygems is not required by default so you need to load it.
+
+  echo "ruby" | bin/rawk '
+    require "rubygems"
+    require "active_support/all"
+    every {|record| puts record.cols.first.pluralize} '
+  
+  -> rubies
+
 == Builtins
 
 rawk provides builtins as member variables.  You can change them as you see fit.
 
-<b>@nr</b>: Holds the current record number 
+@nr holds the current record number 
   ls -ltr | head -2 | bin/rawk 'every {puts @nr}'
     
-<b>@fs</b>: Specifies the field separator applied to each record
+@fs specifies the field separator applied to each record
   
   echo "foo.bar" | bin/rawk ' 
     start {@fs="."}
@@ -151,12 +188,3 @@ Stores the "output record separator", which separates the output records when Aw
 
 OFMT: Stores the format for numeric output. The default format is "%.6g".
 * Ruby's string and number handing gives you much better control over this sort of thing
-
-
-
-
-
-  
-
-
-
