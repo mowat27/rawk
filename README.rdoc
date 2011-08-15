@@ -113,7 +113,7 @@ Note that cols is aliased to c for convenience
     
 == Functions, classes and other ruby stuff
 
-You can use ruby as normal before specifying any blocks.  For example...
+You can use ruby as normal.  For example...
 
 Functions
 
@@ -143,6 +143,22 @@ require works as you would expect although rubygems is not required by default.
     every {|record| puts record.cols.first.pluralize} '
   
   -> rubies
+
+== Variables and Scope
+
+Variables defined inside the condition blocks (start, every, finish) are local to that block.  Create a member variables to share state between blocks.
+
+  ls | tail -2 | rawk '
+    start do
+      local = "foo"
+      @shared = "bar"
+      puts "Starting with #{local}"
+    end
+    every {|record| puts "Running with #{@shared}"} '
+    
+  -> Starting with foo
+     Running with bar
+     Running with bar
 
 == Builtins
 
