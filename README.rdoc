@@ -159,6 +159,14 @@ rawk provides builtins as member variables.  You can change them as you see fit.
   
   -> 1: foo 2: bar
   
+NF: Keeps a count of the number of fields in an input record. The last field in the input record can be designated by $NF.
+* Each Record yielded by the every block has a '.nf' method
+* $NF can be coded as 'every {|record| record.cols.last}'  
+
+ echo "foo bar" | rawk 'every {|record| puts "#{record.nf} fields"}'
+ 
+ -> 2 fields
+  
 === Not supported (yet)
 
 I'm working on support for the following awk built-ins 
@@ -172,10 +180,6 @@ RS:
 Stores the current "record separator" character. Since, by default, an input line is the input record, the default record separator character is a "newline".
 * Will be @rs
 * Currently, records are delimited by newline
-
-NF: Keeps a count of the number of fields in an input record. The last field in the input record can be designated by $NF.
-* Each Record yielded by the every block has a '.nf' method
-* $NF can be coded as 'every {|record| record.cols.last}'
 
 === Redundant
 
