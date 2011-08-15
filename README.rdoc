@@ -173,15 +173,13 @@ Stores the current "record separator" character. Since, by default, an input lin
 * Will be @rs
 * Currently, records are delimited by newline
 
+NF: Keeps a count of the number of fields in an input record. The last field in the input record can be designated by $NF.
+* Each Record yielded by the every block has a '.nf' method
+* $NF can be coded as 'every {|record| record.cols.last}'
 
 === Redundant
 
 The following awk built-ins are redundant in ruby
-
-NF: 
-Keeps a count of the number of fields in an input record. The last field in the input record can be designated by $NF.
-* NF can be coded as 'every {|record| record.cols.size}'
-* $NF can be coded as 'every {|record| record.cols.last}'
 
 OFS: 
 Stores the "output field separator", which separates the fields when Awk prints them. The default is a "space" character.
