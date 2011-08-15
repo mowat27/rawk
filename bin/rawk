@@ -5,7 +5,8 @@ $: << File.join(PROJECT_DIR, 'lib')
 
 require 'rawk/rawk'
 
-DATA = STDIN
-DSL_CODE = ARGV[0]
-
-Rawk::Program.new(DATA).run(DSL_CODE) if DSL_CODE
+module Rawk
+  DATA = STDIN
+  DSL_CODE = ARGV[0]
+  Program.new(DATA).run(DSL_CODE) if DSL_CODE
+end
