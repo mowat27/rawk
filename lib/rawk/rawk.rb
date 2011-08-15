@@ -3,26 +3,27 @@ require 'observer'
 
 module Rawk  
   class Program    
-    attr_reader :fs
+    attr_reader :fs, :rs
     
     def initialize(io)
       @start, @every, @finish = Set.new, Set.new, Set.new
+      initialize_builtins!
       @input_stream = InputStream.new(io)
       @input_stream.add_observer(self)
-      initialize_builtins!
     end
     
     private
     def initialize_builtins!
       @fs = " "
       @nr = 0
+      @rs = "\n"
     end
     
     public
     def on_new_line
       @nr += 1
     end
-    alias :update :on_new_line
+    alias :update :on_new_line # required by Observer
     
     def run(code = "", &block)
       load!(code, &block)
@@ -53,8 +54,9 @@ module Rawk
     
     def execute_code!
       @start.each {|b| b.call}
-      @input_stream.each_line do |str|
-        @every.each {|b| b.call(Record.new(str, @fs))}
+      @input_stream.each_line(@rs) do |str|
+        record = Record.new(str, @fs, @rs)
+        @every.each {|b| b.call(record)}
       end
       @finish.each {|b| b.call}
     end
@@ -67,8 +69,8 @@ module Rawk
       @io = io
     end
     
-    def each_line
-      @io.each_line do |line| 
+    def each_line(separator)
+      @io.each_line(separator) do |line| 
         changed
         notify_observers
         yield line
@@ -77,8 +79,8 @@ module Rawk
   end
   
   class Record < String
-    def initialize(str, fs)
-      self.replace(str.chomp)
+    def initialize(str, fs, eor = "\n")
+      self.replace(str.chomp(eor))
       @fs = fs
     end
     

@@ -113,31 +113,53 @@ module Rawk
     end
     
     describe "support for standard awk built-in variables" do
-      it "calculates the current record num as nr" do
-        record_nums = []
-        @program.run do 
-          start {record_nums << @nr} 
-          every {record_nums << @nr}
-          finish {record_nums << @nr}
+      describe "@nr (current record)" do
+        it "holds the current record number" do
+          record_nums = []
+          @program.run do 
+            start {record_nums << @nr} 
+            every {record_nums << @nr}
+            finish {record_nums << @nr}
+          end
+          record_nums.should == [0,1,2,3,3]
         end
-        record_nums.should == [0,1,2,3,3]
       end
       
-      describe "fs" do
+      describe "@fs (field separator)" do
         it "holds the current field separator expression" do
           @program.fs.should == " "
         end
         it "is applied to each line of data" do
           data = "line"
-          Record.should_receive(:new).with(data, " ")
+          Record.should_receive(:new).with(data, " ", "\n")
           Program.new(data).run {every {|l| nil}}
         end
         it "can be changed by the user's program" do
           data = "line"
-          Record.should_receive(:new).with(data, ",").and_return("dummy")
+          Record.should_receive(:new).with(data, ",", "\n").and_return("dummy")
           Program.new(data).run do
             start {@fs = ','}
             every {|l| nil}
+          end
+        end
+      end
+      
+      describe "@rs (record separator)" do
+        it "defaults to a newline" do
+          @program.rs.should == "\n"
+        end
+        it "can be changed by the user" do
+          data = "line1.line2."
+          Record.should_receive(:new).
+            with("line1.", " ", ".").once.ordered.
+            and_return("")
+          Record.should_receive(:new).
+            with("line2.", " ", ".").once.ordered.
+            and_return("")
+            
+          Program.new(data).run do
+            start {@rs = "."}
+            every {|rec| nil}
           end
         end
       end

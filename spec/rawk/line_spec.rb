@@ -33,5 +33,11 @@ module Rawk
         record.c.should == ["a","b","c"]
       end
     end
+    context "with an explict end of line marker" do
+      it "chomps the end of line marker" do
+        record = Record.new("a b c.", @fs, ".")
+        record.should == "a b c"
+      end
+    end
   end
 end
