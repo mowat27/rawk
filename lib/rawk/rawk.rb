@@ -53,8 +53,8 @@ module Rawk
     
     def execute_code!
       @start.each {|b| b.call}
-      @input_stream.each_line do |row|
-        @every.each {|b| b.call(Line.new(row, @fs))}
+      @input_stream.each_line do |str|
+        @every.each {|b| b.call(Record.new(str, @fs))}
       end
       @finish.each {|b| b.call}
     end
@@ -76,7 +76,7 @@ module Rawk
     end
   end
   
-  class Line < String
+  class Record < String
     def initialize(str, fs)
       self.replace(str.chomp)
       @fs = fs

@@ -68,7 +68,7 @@ Runs before any lines are read from the input stream.  Equivalent to a BEGIN con
 
   every {|record| <code>}
 
-Runs once for each line of input data.  Yields an object of type Line (see below)
+Runs once for each line of input data.  Yields an object of type Record (see below)
 Equivalent to an anonymous block such as awk '{print $1}'
 
   finish {<code>}
@@ -93,9 +93,9 @@ prints
 
 * Conditional blocks 
 
-== Lines
+== Records
 
-every yields an object of type Line which is subclass of String that adds a cols method to access columns.  The cols method returns an array of column values.
+every yields an object of type Record which is subclass of String that adds a cols method to access columns.  The cols method returns an array of column values.
 
   echo "hello world" | rawk 'every do |record| 
     puts "#{record.cols.length} columns: #{record.cols.join(",")}"
@@ -110,7 +110,7 @@ Note that cols is aliased to c for convenience
     end'
     
     -> hello
-
+    
 == Functions, classes and other ruby stuff
 
 You can use ruby as normal before specifying any blocks.  For example...

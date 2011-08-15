@@ -129,12 +129,12 @@ module Rawk
         end
         it "is applied to each line of data" do
           data = "line"
-          Line.should_receive(:new).with(data, " ")
+          Record.should_receive(:new).with(data, " ")
           Program.new(data).run {every {|l| nil}}
         end
         it "can be changed by the user's program" do
           data = "line"
-          Line.should_receive(:new).with(data, ",").and_return("dummy")
+          Record.should_receive(:new).with(data, ",").and_return("dummy")
           Program.new(data).run do
             start {@fs = ','}
             every {|l| nil}
