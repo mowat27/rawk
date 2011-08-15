@@ -39,7 +39,7 @@ Creates the following output
 
 This can be written using rawk as
 
-  $ ls -ltr | bin/rawk '
+  $ ls -ltr | rawk '
     start {puts "Starting..."}
     every {|record| puts "#{record.cols[8]} #{record.cols[0]}"}
     finish {puts "done"} '
@@ -78,7 +78,7 @@ Equivalent to an END condition in awk
 
 You can provide multiple blocks of code for each condition.
 
-  ls -ltr | head -2 | bin/rawk '
+  ls -ltr | head -2 | rawk '
     every {|record| puts 1}
     every {|record| puts 2} '
     
@@ -97,7 +97,7 @@ prints
 
 every yields an object of type Line which is subclass of String that adds a cols method to access columns.  The cols method returns an array of column values.
 
-  echo "hello world" | bin/rawk 'every do |record| 
+  echo "hello world" | rawk 'every do |record| 
     puts "#{record.cols.length} columns: #{record.cols.join(",")}"
   end'
   
@@ -105,7 +105,7 @@ every yields an object of type Line which is subclass of String that adds a cols
 
 Note that cols is aliased to c for convenience
 
-    echo "hello world" | bin/rawk 'every do |record| 
+    echo "hello world" | rawk 'every do |record| 
       puts record.c[0]
     end'
     
@@ -117,7 +117,7 @@ You can use ruby as normal before specifying any blocks.  For example...
 
 Functions
 
-  echo hello world | bin/rawk '
+  echo hello world | rawk '
     def print_first_column(record)
       puts record.cols.first
     end
@@ -125,7 +125,7 @@ Functions
   
 Classes
 
-  echo hello world | bin/rawk '
+  echo hello world | rawk '
     class Printer
       def self.print_first(record)
         puts record.cols.first
@@ -137,7 +137,7 @@ Requires and gems
 
 require works as you would expect although rubygems is not required by default.
 
-  echo "ruby" | bin/rawk '
+  echo "ruby" | rawk '
     require "rubygems"
     require "active_support/all"
     every {|record| puts record.cols.first.pluralize} '
@@ -149,11 +149,11 @@ require works as you would expect although rubygems is not required by default.
 rawk provides builtins as member variables.  You can change them as you see fit.
 
 @nr holds the current record number 
-  ls -ltr | head -2 | bin/rawk 'every {puts @nr}'
+  ls -ltr | head -2 | rawk 'every {puts @nr}'
     
 @fs specifies the field separator applied to each record
   
-  echo "foo.bar" | bin/rawk ' 
+  echo "foo.bar" | rawk ' 
     start {@fs="."}
     every {|record| puts "1: #{record.cols[0]} 2: #{record.cols[1]}"} '
   
