@@ -92,5 +92,13 @@ module Rawk
     def nf 
       cols.length
     end
+    
+    def first
+      cols[0]
+    end
+    
+    def second
+      cols[1]
+    end
   end
 end

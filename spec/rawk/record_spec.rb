@@ -3,9 +3,9 @@ require 'spec_helper'
 module Rawk
   describe Record do
     before do
-      @fs = " "
+      @space = " "
       @data = "a b c\n"
-      @record = Record.new(@data, @fs)
+      @record = Record.new(@data, @space)
     end
     it "is a string" do
       @record.is_a?(String).should be_true
@@ -19,6 +19,18 @@ module Rawk
     end
     it "calculates the number of fields" do
       @record.nf.should == 3
+    end
+    
+    context "accessing columns by name" do
+      before do
+        @record = Record.new("a b c d e f g h i j", @space)
+      end
+    
+      {:first => "a", :second => "b"}.each do |method, expected|
+        it "finds the #{method} column value" do
+          @record.send(method).should == expected
+        end
+      end
     end
     
     context "with a field separator ','" do
@@ -35,7 +47,7 @@ module Rawk
     end
     context "with an explict end of line marker" do
       it "chomps the end of line marker" do
-        record = Record.new("a b c.", @fs, ".")
+        record = Record.new("a b c.", @space, ".")
         record.should == "a b c"
       end
     end
