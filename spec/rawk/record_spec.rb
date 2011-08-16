@@ -26,7 +26,10 @@ module Rawk
         @record = Record.new("a b c d e f g h i j", @space)
       end
     
-      {:first => "a", :second => "b"}.each do |method, expected|
+      { :first => "a", :second => "b", :third => "c",
+        :fourth => "d", :fifth => "e", :sixth => "f",
+        :seventh => "g", :eighth => "h", :ninth => "i",
+        :tenth => "j" }.each do |method, expected|
         it "finds the #{method} column value" do
           @record.send(method).should == expected
         end

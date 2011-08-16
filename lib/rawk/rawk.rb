@@ -78,7 +78,13 @@ module Rawk
     end
   end
   
-  class Record < String
+  class Record < String    
+    def self.column_postion_accessor(name, position)
+      define_method(name.to_sym) do
+        cols[position]
+      end
+    end
+    
     def initialize(str, fs, eor = "\n")
       self.replace(str.chomp(eor))
       @fs = fs
@@ -93,12 +99,15 @@ module Rawk
       cols.length
     end
     
-    def first
-      cols[0]
-    end
-    
-    def second
-      cols[1]
-    end
+    column_postion_accessor :first,   0
+    column_postion_accessor :second,  1
+    column_postion_accessor :third,   2
+    column_postion_accessor :fourth,  3
+    column_postion_accessor :fifth,   4
+    column_postion_accessor :sixth,   5
+    column_postion_accessor :seventh, 6
+    column_postion_accessor :eighth,  7
+    column_postion_accessor :ninth,   8
+    column_postion_accessor :tenth,   9
   end
 end
