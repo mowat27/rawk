@@ -111,6 +111,12 @@ Note that cols is aliased to c for convenience
     
     -> hello
     
+In most cases you will be dealing with a few columns of data so Record provides functions that allow you to access columns the first 10 columns directly by position name.
+
+  echo hello world from me | rawk 'every {|r| puts "#{r.first} #{r.third}"}'
+  
+  -> hello from
+    
 == Functions, classes and other ruby stuff
 
 You can use ruby as normal.  For example...
