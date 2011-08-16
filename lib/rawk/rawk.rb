@@ -99,15 +99,10 @@ module Rawk
       cols.length
     end
     
-    column_postion_accessor :first,   0
-    column_postion_accessor :second,  1
-    column_postion_accessor :third,   2
-    column_postion_accessor :fourth,  3
-    column_postion_accessor :fifth,   4
-    column_postion_accessor :sixth,   5
-    column_postion_accessor :seventh, 6
-    column_postion_accessor :eighth,  7
-    column_postion_accessor :ninth,   8
-    column_postion_accessor :tenth,   9
+    {:first => 0,:second => 1, :third => 2, :fourth => 3,:fifth => 4,
+     :sixth => 5,:seventh => 6,:eighth => 7,:ninth => 8, :tenth => 9
+     }.each do |name, column_position|
+      column_postion_accessor name, column_position
+    end
   end
 end
